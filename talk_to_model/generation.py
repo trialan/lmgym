@@ -13,7 +13,7 @@ def generate_response(prompt, model, tokenizer, params):
     raw_resp = model.generate(input_ids=encoded.input_ids,
                               attention_mask=encoded.attention_mask,
                               **params)
-    text_resp = tokenizer.decode(raw_resp[0])
+    text_resp = tokenizer.decode(raw_resp[0], skip_special_tokens=True)
     return text_resp
 
 
