@@ -10,8 +10,8 @@ DEP_PARAMS =     {"max_new_tokens": 64,
                   "eos_token_id": 198,
                   "pad_token_id": 50256}
 N_MESSAGES = 10
-MODEL_PATH = "Jellywibble/retry-continue-xl-gptj-6500-1002"
-TOKENIZER_PATH = "ChaiML/litv2-6B-rev2"
+MODEL_PATH = "tr416/gptj_finetune_anthropic_data_051723"
+TOKENIZER_PATH = "EleutherAI/gpt-j-6b"
 
 if __name__ == '__main__': 
     model = load_causal_lm(MODEL_PATH)
