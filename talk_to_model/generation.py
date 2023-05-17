@@ -1,0 +1,69 @@
+import numpy as np
+import os
+import openai
+import torch
+
+from analysis_utils.loading import DEVICE
+from analysis_utils.scoring import score_response
+
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+
+def generate_davinci_response(prompt):
+    prompt = prompt[-2046:]
+    out = openai.Completion.create(
+            model="text-davinci-003",
+            prompt=prompt,
+            max_tokens=64,
+            temperature=1.0,
+            stop=["\n", "<|endoftext|>"],
+            top_p=1,
+            frequency_penalty=0,
+            presence_penalty=0)
+    return out['choices'][0]['text']
+
+
+@torch.no_grad()
+def generate_response(prompt, model, tokenizer, params):
+    prompt = prompt[-2046:]
+    encoded = tokenizer(prompt, return_tensors="pt").to(DEVICE)
+    raw_resp = model.generate(input_ids=encoded.input_ids,
+                              attention_mask=encoded.attention_mask,
+                              **params)
+    text_resp = tokenizer.decode(raw_resp[0])
+    return text_resp
+
+
+@torch.no_grad()
+def generate_bestof_N_resp(prompt, model, tokenizer, reward_model,
+                           reward_tokenizer, params, N):
+    responses = []
+    scores = []
+    for i in range(N):
+        r = generate_response(prompt, model, tokenizer, params)
+        responses.append(r)
+        score = score_response(r, reward_model, reward_tokenizer)
+        scores.append(score)
+    ix = np.argmax(scores)
+    return responses[ix]
+
+
+def format_string_for_eval_model_input(string):
+    lines = [l for l in string.split('\n') if len(l) > 0]
+    if len(lines) < 4:
+        return None
+
+    res = []
+
+    bot = 1
+    for line in lines[::-1]:
+        user = 'User' if bot == 0 else 'Bot'
+        if ':' not in line:
+            break
+        pos = line.find(':')
+        newline = '{}:{}'.format(user, line[pos + 1:])
+        res.insert(0, newline)
+        bot ^= 1
+
+    return '\n'.join(res)
