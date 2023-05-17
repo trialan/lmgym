@@ -1,7 +1,7 @@
 from talk_to_model.generation import generate_response
 from talk_to_model.loading import load_causal_lm, load_causal_lm_tokenizer
 
-DEP_PARAMS =     {"max_new_tokens": 64,
+DEP_PARAMS =     {"max_new_tokens": 256,
                   "do_sample": True,
                   "temperature": 0.72,
                   "repetition_penalty": 1.13125,
