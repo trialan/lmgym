@@ -3,7 +3,6 @@ import os
 import torch
 
 from talk_to_model.loading import DEVICE
-from analysis_utils.scoring import score_response
 
 
 def generate_davinci_response(prompt):
