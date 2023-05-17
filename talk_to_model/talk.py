@@ -17,7 +17,7 @@ if __name__ == '__main__':
     model = load_causal_lm(MODEL_PATH)
     tokenizer = load_causal_lm_tokenizer(TOKENIZER_PATH)
     params = DEP_PARAMS
-    base_prompt = "This is a friendly conversation between User and Bot. \nUser: How are you today?\nBot: Great thank you!\nUser: How is the family?\nBot: They are doing fantastic!\n"
+    base_prompt = "This is a friendly conversation between User and Bot. <|endoftext|>User: How are you today?<|endoftext|>Bot: Great thank you!<|endoftext|>User: How is the family?<|endoftext|>Bot: They are doing fantastic!<|endoftext|>"
 
     convo_history = []
     while len(convo_history) < 2*N_MESSAGES:
