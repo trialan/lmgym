@@ -16,12 +16,12 @@ deepspeed train.py \
   --output_dir ./checkpoints/gptj_hh \
   --overwrite_output_dir \
   --per_device_train_batch_size 4 \
-  --gradient_accumulation_steps 1 \
+  --gradient_accumulation_steps 2 \
   --gradient_checkpointing False \
   --max_eval_samples 500 \
   --num_train_epochs 2 \
   --eval_first_step False \
-  --learning_rate 1e-6 \
+  --learning_rate 2e-6 \
   --fp16 \
   --seed 99 \
   --validation_split_percentage 1 \
