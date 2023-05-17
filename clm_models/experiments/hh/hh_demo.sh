@@ -19,7 +19,7 @@ deepspeed train.py \
   --gradient_accumulation_steps 1 \
   --gradient_checkpointing False \
   --max_eval_samples 500 \
-  --num_train_epochs 4 \
+  --num_train_epochs 2 \
   --eval_first_step False \
   --learning_rate 1e-6 \
   --fp16 \
