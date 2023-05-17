@@ -7,7 +7,7 @@ DEP_PARAMS =     {"max_new_tokens": 64,
                   "repetition_penalty": 1.13125,
                   "top_p": 0.725,
                   "top_k": 0,
-                  "eos_token_id": 198,
+                  "eos_token_id": 50256,
                   "pad_token_id": 50256}
 N_MESSAGES = 10
 MODEL_PATH = "tr416/gptj_finetune_anthropic_data_051723"

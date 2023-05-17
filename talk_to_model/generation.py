@@ -5,19 +5,6 @@ import torch
 from talk_to_model.loading import DEVICE
 
 
-def generate_davinci_response(prompt):
-    prompt = prompt[-2046:]
-    out = openai.Completion.create(
-            model="text-davinci-003",
-            prompt=prompt,
-            max_tokens=64,
-            temperature=1.0,
-            stop=["\n", "<|endoftext|>"],
-            top_p=1,
-            frequency_penalty=0,
-            presence_penalty=0)
-    return out['choices'][0]['text']
-
 
 @torch.no_grad()
 def generate_response(prompt, model, tokenizer, params):
