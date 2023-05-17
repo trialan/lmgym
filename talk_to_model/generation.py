@@ -1,13 +1,9 @@
 import numpy as np
 import os
-import openai
 import torch
 
-from analysis_utils.loading import DEVICE
+from talk_to_models.loading import DEVICE
 from analysis_utils.scoring import score_response
-
-
-openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 def generate_davinci_response(prompt):
@@ -33,20 +29,6 @@ def generate_response(prompt, model, tokenizer, params):
                               **params)
     text_resp = tokenizer.decode(raw_resp[0])
     return text_resp
-
-
-@torch.no_grad()
-def generate_bestof_N_resp(prompt, model, tokenizer, reward_model,
-                           reward_tokenizer, params, N):
-    responses = []
-    scores = []
-    for i in range(N):
-        r = generate_response(prompt, model, tokenizer, params)
-        responses.append(r)
-        score = score_response(r, reward_model, reward_tokenizer)
-        scores.append(score)
-    ix = np.argmax(scores)
-    return responses[ix]
 
 
 def format_string_for_eval_model_input(string):
