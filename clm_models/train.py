@@ -26,7 +26,7 @@ def main():
     raw_datasets = raw_datasets.shuffle(train_args.seed)
 
     tokenizer = utils.get_tokenizer(model_args)
-    tokenizre.pad_token = tokenizer.eos_token
+    tokenizer.pad_token = tokenizer.eos_token
     model_config = utils.get_model_config(model_args)
     model = utils.get_base_model_for_finetuning(model_args, model_config)
     model.resize_token_embeddings(len(tokenizer))
