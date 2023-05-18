@@ -3,7 +3,7 @@ kind: Pod
 metadata:
   labels:
     qos.coreweave.cloud/latency: low
-  name: hh-finetune
+  name: hh-gptj-finetuning-run
   namespace: tenant-chairesearch-test
 spec:
   volumes:

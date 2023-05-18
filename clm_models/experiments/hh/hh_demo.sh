@@ -1,6 +1,6 @@
 deepspeed train.py \
-  --model_name_or_path EleutherAI/gpt-j-6b \
-  --tokenizer_name EleutherAI/gpt-j-6b \
+  --model_name_or_path togethercomputer/RedPajama-INCITE-Instruct-3B-v1 \
+  --tokenizer_name togethercomputer/RedPajama-INCITE-Instruct-3B-v1 \
   --dataset_name AlekseyKorshuk/hh-lmgym-demo \
   --train_to_probs False \
   --do_train \
@@ -21,7 +21,7 @@ deepspeed train.py \
   --max_eval_samples 500 \
   --num_train_epochs 2 \
   --eval_first_step False \
-  --learning_rate 2e-6 \
+  --learning_rate 1e-6 \
   --fp16 \
   --seed 99 \
   --validation_split_percentage 1 \
