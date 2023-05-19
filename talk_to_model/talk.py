@@ -9,6 +9,13 @@ DEP_PARAMS =     {"max_new_tokens": 256,
                   "top_k": 0,
                   "eos_token_id": 50256,
                   "pad_token_id": 50256}
+DEFAULT_PARAMS = {"max_new_tokens": 64,
+                  "do_sample": True,
+                  "temperature": 1.0,
+                  "top_p": 1.0,
+                  "top_k": 0,
+                  "eos_token_id": 198,
+                  "pad_token_id": 50256}
 N_MESSAGES = 10
 MODEL_PATH = "tr416/gptj_finetune_anthropic_data_051723"
 TOKENIZER_PATH = "EleutherAI/gpt-j-6b"
@@ -16,7 +23,7 @@ TOKENIZER_PATH = "EleutherAI/gpt-j-6b"
 if __name__ == '__main__': 
     model = load_causal_lm(MODEL_PATH)
     tokenizer = load_causal_lm_tokenizer(TOKENIZER_PATH)
-    params = DEP_PARAMS
+    params = DEFAULT_PARAMS
     base_prompt = "This is a friendly conversation between User and Bot. <|endoftext|>User: How are you today?<|endoftext|>Bot: Great thank you!<|endoftext|>User: How is the family?<|endoftext|>Bot: They are doing fantastic!<|endoftext|>"
 
     convo_history = []
