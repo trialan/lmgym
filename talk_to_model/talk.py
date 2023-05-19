@@ -25,6 +25,7 @@ if __name__ == '__main__':
         convo_history.append(user_message)
         prompt = base_prompt + "<|endoftext|>".join(convo_history) + "<|endoftext|>Bot:"
         completion = generate_response(prompt, model, tokenizer, params)
+        import pdb;pdb.set_trace() 
         bot_message = "Bot:"+completion.split("Bot:")[-1]
         convo_history.append(bot_message)
         print(bot_message)
