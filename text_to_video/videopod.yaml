@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    qos.coreweave.cloud/latency: low
+  name: test-ttv
+  namespace: tenant-chairesearch-test
+spec:
+  volumes:
+    - name: storage-finetune-models
+      persistentVolumeClaim:
+        claimName: storage-finetune-models
+  imagePullSecrets:
+    - name: docker-creds
+  containers:
+    - name: bot-test-container
+      image: ghcr.io/coreweave/ml-containers/torch-nccl:7ed4925
+      imagePullPolicy: Always
+      command: [ "/bin/sh" ]
+      args: [ "-c", "echo '1' > /tmp/ready && sleep infinity" ]
+      resources:
+        limits:
+          cpu: "48"
+          nvidia.com/gpu: "4"
+          memory: 256Gi
+        requests:
+          cpu: "48"
+          nvidia.com/gpu: "4"
+          memory: 256Gi
+      volumeMounts:
+        - name: storage-finetune-models
+          mountPath: /models
+      readinessProbe:
+        exec:
+          command:
+            - cat
+            - /tmp/ready
+        failureThreshold: 1
+        initialDelaySeconds: 10
+        periodSeconds: 10
+        timeoutSeconds: 5
+        successThreshold: 1
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: gpu.nvidia.com/class
+                operator: In
+                values:
+                  - A100_NVLINK_80GB
+#                  - A100_PCIE_80GB
+#                  - A100_NVLINK
+#                  - A100_PCIE_40GB
+              - key: topology.kubernetes.io/region
+                operator: In
+                values:
+                  - LGA1
+                  - LAS1
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 50
+          preference:
+            matchExpressions:
+              - key: topology.kubernetes.io/region
+                operator: In
+                values:
+                  - LGA1
+        - weight: 40
+          preference:
+            matchExpressions:
+              - key: gpu.nvidia.com/class
+                operator: In
+                values:
+                  - A100_NVLINK_80GB
+        - weight: 30
+          preference:
+            matchExpressions:
+              - key: gpu.nvidia.com/class
+                operator: In
+                values:
+                  - A100_PCIE_80GB
+        - weight: 20
+          preference:
+            matchExpressions:
+              - key: gpu.nvidia.com/class
+                operator: In
+                values:
+                  - A100_NVLINK
+        - weight: 10
+          preference:
+            matchExpressions:
+              - key: gpu.nvidia.com/class
+                operator: In
+                values:
+                  - A100_PCIE_40GB
